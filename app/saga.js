@@ -1,24 +1,21 @@
-import { delay, put, takeEvery, all } from 'redux-saga/effects'
-import { add } from './action'
-import { INCREMENTASYNC } from './actionType'
+import { delay, put, takeEvery, all } from "redux-saga/effects";
+import { addOne } from "./actions/counter";
+import { ASYNC_INCREMENT } from "./actionType";
 function* helloSaga() {
-    console.log('Hello saga!')
+  console.log("Hello saga!");
 }
 
 function* incrementAsync() {
-    // 延迟1s
-    yield delay(1000)
+  // 延迟1s
+  yield delay(1000);
 
-    yield put(add()/* action: {type, payload}*/) 
+  yield put(addOne() /* action: {type, payload}*/);
 }
 
 function* watchIncrementAsync() {
-    yield takeEvery(INCREMENTASYNC, incrementAsync)
+  yield takeEvery(ASYNC_INCREMENT, incrementAsync);
 }
 
 export default function* rootSaga() {
-    yield all([
-        helloSaga(),
-        watchIncrementAsync()
-    ])
+  yield all([helloSaga(), watchIncrementAsync()]);
 }

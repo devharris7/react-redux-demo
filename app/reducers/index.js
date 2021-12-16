@@ -1,9 +1,10 @@
-import { combineReducers } from 'redux'
-import { info, count } from './reducer'
+import { combineReducers } from "redux";
+import { counterReducer as counter } from "./counter";
+import { greetingReducer as greeting } from "./greeting";
 
 const reducer = combineReducers({
-    info,
-    count
-})
+  counter,
+  greeting,
+});
 
-export default reducer
+export default reducer;

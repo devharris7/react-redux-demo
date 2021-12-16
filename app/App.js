@@ -1,34 +1,68 @@
-import { connect } from 'react-redux'
-import MyComponent from './myComponent'
-import { changeInput, add, substract, toZero, incrementAsync } from './action'
+import React from "react";
+import { connect, useSelector } from "react-redux";
+import {
+  addOne,
+  substractOne,
+  addNumber,
+  resetCounter as _reset,
+  asyncIncrement as _asyncIncrement,
+} from "./actions/counter";
+import { changeGreeting } from "./actions/greeting";
+
+const AppComponent = ({
+  greeting,
+  counter,
+  onChange,
+  add,
+  addAnyNumber,
+  substract,
+  reset,
+  asyncIncrement,
+}) => {
+  // useSelector((state) => {
+  //   console.log(state);
+  //   return state.greeting;
+  // });
+
+  const { text, name } = greeting;
+  // const [greeting, setGreeting] = useState({ text: "", name: "" });
+  const [number, setNumber] = React.useState(0);
+  console.log(number);
+
+  return (
+    <div className="index">
+      <p>{text}</p>
+      <input defaultValue={name} onChange={onChange} />
+      <p>{counter}</p>
+      <button onClick={add}>Plus 1</button>
+      <input onChange={(e) => setNumber(e.target.value)} />
+      <button onClick={() => addAnyNumber(Number(number))}>
+        Add Any Number
+      </button>
+      <button onClick={substract}>Minus 1</button>
+      <button onClick={reset}>Reset</button>
+      <button onClick={asyncIncrement}>Plus 1 after 1 sec</button>
+    </div>
+  );
+};
 
 // Map Redux state to component props
-function mapStateToProps(state) {
-  console.log('state', state)
+const mapStateToProps = (state) => {
+  console.log(state);
   return {
-    info: state.info,
-    count: state.count
-    // text: state.text,
-    // name: state.name,
-    // count: state.count,
-  }
-}
+    greeting: state.greeting,
+    counter: state.counter,
+  };
+};
 
 // Map Redux actions to component props
-function mapDispatchToProps(dispatch) {
-  return {
-    onChange: (e) => dispatch(changeInput(e.target.value)),
-    add: () => dispatch(add()),
-    substract: () => dispatch(substract()),
-    toZero: () => dispatch(toZero()),
-    incrementAsync: () => dispatch(incrementAsync())
-  }
-}
+const mapDispatchToProps = {
+  onChange: changeGreeting,
+  add: addOne,
+  addAnyNumber: addNumber,
+  substract: substractOne,
+  reset: _reset,
+  asyncIncrement: _asyncIncrement,
+};
 
-// Connected Component
-const App = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MyComponent)
-
-export default App
+export default connect(mapStateToProps, mapDispatchToProps)(AppComponent);
